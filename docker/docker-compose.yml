@@ -1,0 +1,24 @@
+version: '3.8'
+name: currencyrates-by-gavrilovanton
+
+services:
+  redis:
+    container_name: cache
+    image: redis:7.0.11-alpine
+    restart: "no"
+    ports:
+      - "6379:6379"
+    networks:
+      - default
+  api:
+    build: .
+    container_name: currency-rates-api
+    depends_on:
+      - redis
+    restart: "no"
+    ports:
+      - "80:80"
+    volumes:
+      - ../:/var/www
+    networks:
+      - default
